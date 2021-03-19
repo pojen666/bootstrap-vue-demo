@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import Vue from "vue";
-import { SidebarPlugin, NavbarPlugin, ListGroupPlugin } from "bootstrap-vue";
+import Vue from 'vue';
+import { SidebarPlugin, NavbarPlugin, ListGroupPlugin } from 'bootstrap-vue';
 
 Vue.use(SidebarPlugin);
 Vue.use(NavbarPlugin);
@@ -42,7 +42,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -50,20 +50,12 @@ export default {
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
-
 .side-menu-list-item {
   background-color: #343a40 !important;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.btn {
+  margin-left: 1px!important;
+  margin-right: 1px!important;
 }
 </style>
