@@ -18,7 +18,7 @@
           <router-link class="text-light" to="/">Home</router-link>
         </b-list-group-item>
         <b-list-group-item class="side-menu-list-item text-light">
-          <router-link class="text-light" :to="{ name: 'Member' }"
+          <router-link class="text-light" :to="{ name: 'Employee' }"
             >Member
           </router-link>
         </b-list-group-item>
