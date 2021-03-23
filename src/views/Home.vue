@@ -23,6 +23,8 @@
 <script>
 export default {
   name: 'Home',
-  components: {},
-};
+  created: function() {
+    this.$store.dispatch('setTitle', 'Welcome')
+  }
+}
 </script>

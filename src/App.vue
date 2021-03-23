@@ -1,13 +1,22 @@
 <template>
   <div id="app">
-    <b-navbar type="dark" variant="dark">
-      <b-navbar-nav>
-        <b-button v-b-toggle.main-sidebar>Menu</b-button>
+    <b-navbar type="dark" variant="dark" fixed="top" :sticky="true">
+      <b-navbar-nav class="w-100">
+        <li class="col-4 no-padding-left d-flex align-items-center">
+          <b-button variant="dark" class="align-items-center rounded-circle" v-b-toggle.main-sidebar>
+            <b-icon icon="list" scale="1.25" variant="light"></b-icon>
+          </b-button>
+        </li>
+        <b-nav-item class="col-4 d-flex justify-content-center align-items-center" disabled>
+          <h4 class="font-weight-bold text-white">
+            {{ title }}
+          </h4>
+        </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
     <b-sidebar
       id="main-sidebar"
-      title="Menu"
+      title="選單"
       backdrop
       bg-variant="dark"
       text-variant="light"
@@ -15,11 +24,11 @@
     >
       <b-list-group>
         <b-list-group-item class="side-menu-list-item">
-          <router-link class="text-light" to="/">Home</router-link>
+          <router-link class="text-light" to="/">首頁</router-link>
         </b-list-group-item>
         <b-list-group-item class="side-menu-list-item text-light">
           <router-link class="text-light" :to="{ name: 'Employee' }"
-            >Member
+            >系統開發團隊人員管理作業
           </router-link>
         </b-list-group-item>
       </b-list-group>
@@ -29,16 +38,21 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { SidebarPlugin, NavbarPlugin, ListGroupPlugin } from 'bootstrap-vue';
+import Vue from 'vue'
+import { SidebarPlugin, NavbarPlugin, ListGroupPlugin, IconsPlugin } from 'bootstrap-vue'
 
-Vue.use(SidebarPlugin);
-Vue.use(NavbarPlugin);
-Vue.use(ListGroupPlugin);
+Vue.use(IconsPlugin)
+Vue.use(SidebarPlugin)
+Vue.use(NavbarPlugin)
+Vue.use(ListGroupPlugin)
 
 export default {
-  setup() {},
-};
+  computed: {
+    title: function() {
+      return this.$store.getters.title
+    }
+  }
+}
 </script>
 
 
@@ -55,7 +69,11 @@ export default {
 }
 
 .btn {
-  margin-left: 1px!important;
-  margin-right: 1px!important;
+  margin-left: 1px !important;
+  margin-right: 1px !important;
+}
+
+.no-padding-left {
+  padding-left: 0;
 }
 </style>

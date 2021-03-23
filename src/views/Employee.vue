@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 class="text-center">This is an Employee page</h1>
     <b-form>
+      <br/>
       <div class="col-md-12">
         <b-card no-body>
           <template #header>
@@ -441,6 +441,9 @@ export default {
         this.$bvModal.hide('edit-modal')
       }
     }
+  },
+  created: function() {
+    this.$store.dispatch('setTitle', '系統開發團隊人員管理作業')
   }
 }
 </script>
