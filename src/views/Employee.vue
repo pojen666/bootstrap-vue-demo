@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form>
-      <br/>
+      <br />
       <div class="col-md-12">
         <b-card no-body>
           <template #header>
@@ -93,8 +93,8 @@
         :items="page.employees"
         head-variant="dark"
       >
-        <template #cell(index)="data"> 
-          {{data.index + 1}}
+        <template #cell(index)="data">
+          {{ data.index + 1 }}
         </template>
         <template #cell(id)="data">
           {{ data.item.id | idMask }}
@@ -231,7 +231,7 @@
 import Vue from 'vue'
 import { FormPlugin, CardPlugin, TablePlugin } from 'bootstrap-vue'
 import { validationMixin } from 'vuelidate'
-import { required, email, minLength } from 'vuelidate/lib/validators'
+import { required, email, minLength, and } from 'vuelidate/lib/validators'
 import ConfirmModal from '../components/ConfirmModal.vue'
 
 Vue.use(TablePlugin)
@@ -282,11 +282,16 @@ export default {
       return this.page.employees.length
     },
     invalidIdFeedback() {
-      if (this.target.id && this.target.id.length >= 5) {
-        return 'ID不得重複'
-      } else {
-        return 'ID為必填欄位且不得小於5碼'
+      if (!this.$v.target.id.required) {
+        return 'ID為必填欄位'
       }
+      if (!this.$v.target.id.minLength) {
+        return 'ID長度不可小於5碼'
+      }
+      if (!this.$v.target.id.checkIdNotRepeat) {
+        return 'ID不得重複'
+      }
+      return ''
     }
   },
   filters: {
@@ -310,8 +315,8 @@ export default {
       id: {
         required,
         minLength: minLength(5),
-        checkFormIdValidity: function(value) {
-          return this.checkFormIdValidity(value)
+        checkIdNotRepeat: function(value) {
+          return this.checkIdNotRepeat(value)
         }
       },
       name: {
@@ -322,8 +327,7 @@ export default {
         required
       },
       mobile: {
-        required,
-        minLength: minLength(10)
+        requiredAndMinLength: and(required, minLength(10))
       }
     }
   },
@@ -347,7 +351,7 @@ export default {
     checkRequired(value) {
       return value.length > 0
     },
-    checkFormIdValidity(value) {
+    checkIdNotRepeat(value) {
       if (value) {
         if (this.isNewEditForm) {
           return (
@@ -359,7 +363,7 @@ export default {
           return true
         }
       } else {
-        return false
+        return true
       }
     },
     getEmployees() {
@@ -418,20 +422,22 @@ export default {
         1
       )
     },
-    checkFormValidity(form) {
-      return form.checkValidity()
-    },
     isDeleted(employee) {
       return this.page.deletedEmployeeIds.findIndex(employee.id) > -1
     },
     handleSubmit() {
       this.$v.target.$touch()
-      if (this.$v.target.$anyError) {
+      if (this.$v.target.$invalid) {
         return
       } else {
+        this.$v.target.$reset()
         let oldEmployee = this.getEmployee(this.target.id)
         if (oldEmployee !== undefined) {
-          oldEmployee = Object.assign(oldEmployee, this.target)
+          this.page.employees.splice(
+            this.page.employees.findIndex(employee => employee === oldEmployee),
+            1,
+            this.createEmployeeObject(this.target)
+          )
         } else {
           const newEmployee = this.createEmployeeObject(this.target)
           this.page.newEmployees.push(newEmployee)
