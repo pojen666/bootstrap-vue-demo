@@ -14,6 +14,11 @@ const routes = [
     path: '/employee',
     name: 'Employee',
     component: () => import('../views/Employee.vue')
+  },
+  {
+    path: '/env-variable',
+    name: 'EnvVariable',
+    component:() => import('../views/EnvVariable.vue')
   }
 ]
 

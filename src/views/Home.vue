@@ -24,7 +24,7 @@
 export default {
   name: 'Home',
   created: function() {
-    this.$store.dispatch('setTitle', 'Welcome')
+    this.$store.dispatch('setTitle', '歡迎')
   }
 }
 </script>

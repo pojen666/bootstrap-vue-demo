@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <b-navbar type="dark" variant="dark" fixed="top" :sticky="true">
-      <b-navbar-nav class="w-100">
-        <b-nav-text class="col-lg-4 d-none d-lg-block no-padding-between"></b-nav-text>
+      <b-navbar-nav class="w-100 d-flex">
+        <b-nav-text class="col-lg-4 hidden-xs no-padding-between"> </b-nav-text>
         <b-nav-text
-          class="font-weight-bold text-light h4 col-lg-4 col-10 col-md-11 text-lg-center text-left no-padding-between"
+          class="font-weight-bold text-light h4 col-lg-4 col-10 text-lg-center text-left no-padding-between"
         >
           {{ title }}
         </b-nav-text>
         <b-nav-text class="text-right col-lg-4 col-1 no-padding-between">
           <b-button
             variant="dark"
-            class="align-items-center rounded-circle"
+            class="rounded-circle"
             v-b-toggle.main-sidebar
           >
             <b-icon icon="list" scale="1.25" variant="light"></b-icon>
@@ -51,6 +51,11 @@
             block
           >
             系統開發團隊人員管理作業
+          </b-button>
+        </b-list-group-item>
+        <b-list-group-item class="side-menu-list-item">
+          <b-button variant="dark" @click="navigateTo('/env-variable')" block>
+            環境變數
           </b-button>
         </b-list-group-item>
       </b-list-group>
@@ -98,11 +103,6 @@ export default {
 
 .side-menu-list-item {
   background-color: #343a40 !important;
-}
-
-.btn {
-  margin-left: 1px !important;
-  margin-right: 1px !important;
 }
 
 .no-padding-between {

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-    baseURL: 'https://a3b93ec9-c7f2-4296-af24-5e1b010d4473.mock.pstmn.io',
+    baseURL: process.env.VUE_APP_API_BASE_URL,
   });
 instance.defaults.headers.get['Accept'] = 'application/json';
 
