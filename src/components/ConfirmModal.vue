@@ -3,6 +3,7 @@
     v-model="isOpen"
     centered
     hide-footer
+    :no-close-on-backdrop="noCloseOnBackdrop"
     hide-header-close
     :title="title"
     :header-bg-variant="headerBgVariant"
@@ -12,7 +13,7 @@
     <b-button :variant="buttonBg" class="mt-3" block @click="confirm()"
       >確認</b-button
     >
-    <b-button variant="secondary" class="mt-3" block @click="close()"
+    <b-button v-show="hasCancelButton" variant="secondary" class="mt-3" block @click="close()"
       >取消</b-button
     >
   </b-modal>
@@ -46,6 +47,14 @@ export default {
     buttonBg: {
       type: String,
       default: 'dark'
+    },
+    hasCancelButton: {
+      type: Boolean,
+      default: true
+    },
+    noCloseOnBackdrop: {
+      type: Boolean,
+      default: true
     }
   },
   data: function() {

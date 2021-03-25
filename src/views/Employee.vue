@@ -253,8 +253,11 @@ export default {
       page: {
         // 查詢出來的成員
         employees: [],
+        // demo中新增的人員
         newEmployees: [],
+        // demo中山除了人員
         deletedEmployeeIds: [],
+        // for BootstrapVue table title mapping data
         tableFields: [
           { key: 'index', label: '#' },
           { key: 'id', label: 'ID', sortable: true },
@@ -281,6 +284,7 @@ export default {
     totoalPages() {
       return this.page.employees.length
     },
+    // id invalid feedback
     invalidIdFeedback() {
       if (!this.$v.target.id.required) {
         return 'ID為必填欄位'
@@ -315,6 +319,7 @@ export default {
       id: {
         required,
         minLength: minLength(5),
+        // 可自定義Validator
         checkIdNotRepeat: function(value) {
           return this.checkIdNotRepeat(value)
         }
@@ -327,6 +332,7 @@ export default {
         required
       },
       mobile: {
+        // and support
         requiredAndMinLength: and(required, minLength(10))
       }
     }
@@ -344,13 +350,12 @@ export default {
         }
       }
     },
+    // 簡易回傳boolean判斷該欄位驗證狀態
     validateState(name) {
       const { $dirty, $error } = this.$v.target[name]
       return $dirty ? !$error : null
     },
-    checkRequired(value) {
-      return value.length > 0
-    },
+    // 檢查id是否有重複
     checkIdNotRepeat(value) {
       if (value) {
         if (this.isNewEditForm) {
@@ -366,6 +371,7 @@ export default {
         return true
       }
     },
+    // 跟Mock API取得資料並跟demo時的操作結果做整合
     getEmployees() {
       this.page.isQuering = true
       Vue.axios('employees')
@@ -396,9 +402,11 @@ export default {
         .catch(error => console.log(error))
         .finally(() => (this.page.isQuering = false))
     },
+    // 利用ID從員工清單中取得該員工資訊
     getEmployee(id) {
       return this.page.employees.find(employee => employee.id === id)
     },
+    // 開啟編輯modal
     openEmployeeModal(id) {
       if (id) {
         this.target = this.createEmployeeObject(this.getEmployee(id))
@@ -409,29 +417,38 @@ export default {
       }
       this.$bvModal.show('edit-modal')
     },
+    // 開啟確認刪除紐
     openDeleteConfirmModal(id) {
       this.$refs.delelteConfirmModal.open(id)
     },
+    // 確認刪除
     confirmDelete(id) {
-      this.page.deletedEmployeeIds.push(id)
       this.deleteFromEmployees(id)
     },
+    // 刪除員工的方法
     deleteFromEmployees(id) {
+      this.page.deletedEmployeeIds.push(id)
       this.page.employees.splice(
         this.page.employees.findIndex(employee => employee.id === id),
         1
       )
     },
+    // 判斷是否被刪除
     isDeleted(employee) {
       return this.page.deletedEmployeeIds.findIndex(employee.id) > -1
     },
     handleSubmit() {
+      // 標記target底下驗證為dirty
       this.$v.target.$touch()
+      // 檢查是否驗證不合格
       if (this.$v.target.$invalid) {
         return
       } else {
+        // 驗證成功重置驗證
         this.$v.target.$reset()
+        // 嘗試取得與該ID相同之員工
         let oldEmployee = this.getEmployee(this.target.id)
+        // 如果存在則修改反之則新增
         if (oldEmployee !== undefined) {
           this.page.employees.splice(
             this.page.employees.findIndex(employee => employee === oldEmployee),
